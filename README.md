@@ -10,10 +10,8 @@ You can access the live demo of the application here: [Live Demo](https://sports
 
 - [Features](#features)
 - [Technologies](#technologies)
-- [Getting Started](#getting-started)
 - [API Endpoints](#api-endpoints)
 - [Usage](#usage)
-- [License](#license)
 
 ## Features
 
