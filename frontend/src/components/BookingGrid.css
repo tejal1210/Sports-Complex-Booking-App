@@ -1,5 +1,3 @@
-/* BookingGrid.css */
-
 /* Header with space between title and login button */
 .header {
     display: flex;
@@ -8,10 +6,10 @@
     padding: 10px 20px;
     background-color: #f0f0f0;
     border-bottom: 1px solid #ddd;
-}
-
-/* Login button styling */
-.login-button {
+  }
+  
+  /* Login button styling */
+  .login-button {
     background-color: #4CAF50;
     color: white;
     border: 1px solid #ddd;
@@ -19,29 +17,29 @@
     cursor: pointer;
     border-radius: 4px;
     width: 75px;
-}
-
-.login-button:hover {
+  }
+  
+  .login-button:hover {
     background-color: #45a049;
-}
-
-/* Container for the dropdown and date picker */
-.selection-container {
+  }
+  
+  /* Container for the dropdown and date picker */
+  .selection-container {
     display: flex;
     justify-content: space-between; /* Space between elements */
     align-items: center; /* Center items vertically */
     margin: 20px 0; /* Add margin for spacing */
-}
-
-/* Basic styles for the grid and slots */
-.grid {
+  }
+  
+  /* Basic styles for the grid and slots */
+  .grid {
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
     flex-wrap: wrap; /* Allow wrapping for smaller screens */
-}
-
-.slot {
+  }
+  
+  .slot {
     width: 80px;
     height: 40px;
     margin: 5px;
@@ -51,19 +49,19 @@
     cursor: pointer;
     border-radius: 4px; /* Add border-radius for a smoother look */
     transition: background-color 0.2s; /* Add transition effect */
-}
-
-.slot:hover {
+  }
+  
+  .slot:hover {
     background-color: #f9f9f9; /* Change background on hover */
-}
-
-.booked {
-    background-color: #ff6f61;
+  }
+  
+  .booked {
+    background-color: #8705ae;
     color: white;
-}
-
-/* Modal styles */
-.modal-overlay {
+  }
+  
+  /* Modal styles */
+  .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -73,21 +71,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.modal {
+  }
+  
+  .modal {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     width: 300px;
     text-align: center;
-}
-
-/* Date Picker styles */
-.date-picker {
+  }
+  
+  /* Date Picker styles */
+  .date-picker {
     padding: 10px; /* Add padding */
     border: 1px solid #ddd; /* Border for the date picker */
     border-radius: 4px; /* Rounded corners */
     margin-right: 10px; /* Space between date picker and dropdown */
     width: 200px; /* Fixed width for consistency */
-}
+  }
+  

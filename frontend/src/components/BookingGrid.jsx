@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import DatePicker from 'react-datepicker'; // Ensure you've installed react-datepicker
-import 'react-datepicker/dist/react-datepicker.css'; // Import styles for the date picker
-import './BookingGrid.css'; // Make sure to create this CSS file for styles
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import './BookingGrid.css';
 
 const BookingGrid = () => {
   const [bookings, setBookings] = useState([]);
   const [selectedCenter, setSelectedCenter] = useState('');
   const [centers] = useState(['Indiranagar', 'Koramangala']);
   const sports = ['Football', 'Badminton', 'Squash', 'Tennis', 'Basketball', 'Cricket'];
-  
+
   const [showModal, setShowModal] = useState(false);
   const [selectedSport, setSelectedSport] = useState('');
   const [selectedTime, setSelectedTime] = useState('');
-  const [selectedDate, setSelectedDate] = useState(new Date()); // State for the selected date
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const navigate = useNavigate(); // Initialize navigation
+  const navigate = useNavigate();
 
   const fetchBookings = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/bookings');
-      console.log('Bookings fetched:', response.data); // Debugging statement
+      const formattedDate = selectedDate.toLocaleDateString('en-CA');
+      const response = await axios.get(`http://localhost:5000/api/bookings?date=${formattedDate}&court=${selectedCenter}`);
+      console.log('Bookings fetched:', response.data);
       setBookings(response.data);
     } catch (error) {
       console.error('Error fetching bookings', error);
@@ -31,10 +32,9 @@ const BookingGrid = () => {
 
   useEffect(() => {
     fetchBookings();
-    // Check if user is logged in based on token in local storage
     const token = localStorage.getItem('token');
-    setIsLoggedIn(!!token); // Update login status
-  }, []);
+    setIsLoggedIn(!!token);
+  }, [selectedDate, selectedCenter]);
 
   const handleBooking = (sport, hour) => {
     setSelectedSport(sport);
@@ -49,16 +49,16 @@ const BookingGrid = () => {
     }
 
     try {
-      const token = localStorage.getItem('token'); // Get the token from local storage
+      const token = localStorage.getItem('token');
       if (!token) {
         alert('No token found, please log in.');
-        navigate('/login'); // Redirect to login if no token
+        navigate('/login');
         return;
       }
 
       const config = {
         headers: {
-          Authorization: `Bearer ${token}`, // Set the authorization header
+          Authorization: `Bearer ${token}`,
         },
       };
 
@@ -66,24 +66,22 @@ const BookingGrid = () => {
         sport: selectedSport,
         timeSlot: selectedTime,
         court: selectedCenter,
-        date: selectedDate.toLocaleDateString('en-CA'), // Use local date string in YYYY-MM-DD format
+        date: selectedDate.toLocaleDateString('en-CA'),
       };
 
-      await axios.post('http://localhost:5000/api/bookings', bookingData, config); // Send booking data with token
+      await axios.post('http://localhost:5000/api/bookings', bookingData, config);
       setShowModal(false);
-      fetchBookings(); // Refresh bookings after successful creation
+      fetchBookings();
     } catch (error) {
-      console.error('Error creating booking', error); // Log error for debugging
+      console.error('Error creating booking', error);
       alert('Error creating booking: ' + (error.response?.data?.message || 'Unknown error'));
     }
   };
 
   return (
     <div>
-      {/* Header with Login Button */}
       <div className="header">
         <h1>Sports Complex Booking</h1>
-        {/* Render Login Button only if the user is not logged in */}
         {!isLoggedIn && (
           <button className="login-button" onClick={() => navigate('/login')}>
             Login
@@ -91,14 +89,13 @@ const BookingGrid = () => {
         )}
       </div>
 
-      {/* Selection Container with DatePicker and Center Selection */}
       <div className="selection-container">
         <DatePicker
           selected={selectedDate}
-          onChange={(date) => setSelectedDate(date)} // Update selected date
-          dateFormat="yyyy-MM-dd" // Format the date
+          onChange={(date) => setSelectedDate(date)}
+          dateFormat="yyyy-MM-dd"
           placeholderText="Select a date"
-          className="date-picker" // Add your custom styles for the date picker
+          className="date-picker"
         />
         
         <select onChange={(e) => setSelectedCenter(e.target.value)} value={selectedCenter}>
@@ -109,24 +106,37 @@ const BookingGrid = () => {
         </select>
       </div>
 
-      {/* Grid for booking slots */}
       <div className="grid">
         {sports.map((sport, index) => (
           <div key={index}>
             <h2>{sport}</h2>
             {[...Array(17)].map((_, hourIndex) => {
               const hour = `${7 + hourIndex}:00`;
-              const isBooked = bookings.some(
-                (booking) => 
-                  booking.sport === sport && 
-                  booking.timeSlot === hour &&
-                  booking.date === selectedDate.toLocaleDateString('en-CA') // Check date in correct format
-              );
+              const isBooked = bookings.some((booking) => {
+                const bookingDate = new Date(booking.date).toLocaleDateString('en-CA'); // Ensure correct format
+                const bookingSport = booking.sport;
+                const bookingTimeSlot = booking.timeSlot;
+
+                console.log(`Checking booking:`, {
+                  sport,
+                  hour,
+                  bookingSport,
+                  bookingTimeSlot,
+                  bookingDate,
+                  selectedDate: selectedDate.toLocaleDateString('en-CA'),
+                });
+
+                return (
+                  bookingSport === sport &&
+                  bookingTimeSlot === hour &&
+                  bookingDate === selectedDate.toLocaleDateString('en-CA')
+                );
+              });
 
               return (
                 <div
                   key={hourIndex}
-                  className={`slot ${isBooked ? 'booked' : ''}`}
+                  className={`slot ${isBooked ? 'booked' : ''}`} 
                   onClick={() => !isBooked && handleBooking(sport, hour)}
                 >
                   {hour}
@@ -137,7 +147,6 @@ const BookingGrid = () => {
         ))}
       </div>
 
-      {/* Modal for creating booking */}
       {showModal && (
         <div className="modal-overlay">
           <div className="modal">
@@ -145,7 +154,7 @@ const BookingGrid = () => {
             <p>Sport: {selectedSport}</p>
             <p>Time: {selectedTime}</p>
             <p>Center: {selectedCenter}</p>
-            <p>Date: {selectedDate.toLocaleDateString('en-CA')}</p> {/* Display selected date */}
+            <p>Date: {selectedDate.toLocaleDateString('en-CA')}</p>
             <button onClick={createBooking}>Confirm Booking</button>
             <button onClick={() => setShowModal(false)}>Cancel</button>
           </div>
