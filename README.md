@@ -4,7 +4,7 @@ Welcome to the Sports Complex Booking App! This application allows users to easi
 
 ## Live Demo
 
-You can access the live demo of the application here: [Frontend](https://sports-complex-booking-app-frontend.onrender.com/) [Backend](https://sports-complex-booking-app-backend.onrender.com))
+You can access the live demo of the application here: [Frontend](https://sports-complex-booking-app-frontend.onrender.com/) [Backend](https://sports-complex-booking-app-backend.onrender.com)
 
 ## Table of Contents
 
