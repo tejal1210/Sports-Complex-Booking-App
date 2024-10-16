@@ -22,7 +22,7 @@ const BookingGrid = () => {
   const fetchBookings = async () => {
     try {
       const formattedDate = selectedDate.toLocaleDateString('en-CA');
-      const response = await axios.get(`http://localhost:5000/api/bookings?date=${formattedDate}&court=${selectedCenter}`);
+      const response = await axios.get(`https://sports-complex-booking-app-backend.onrender.com/api/bookings?date=${formattedDate}&court=${selectedCenter}`);
       console.log('Bookings fetched:', response.data);
       setBookings(response.data);
     } catch (error) {
@@ -69,7 +69,7 @@ const BookingGrid = () => {
         date: selectedDate.toLocaleDateString('en-CA'),
       };
 
-      await axios.post('http://localhost:5000/api/bookings', bookingData, config);
+      await axios.post('https://sports-complex-booking-app-backend.onrender.com/api/bookings', bookingData, config);
       setShowModal(false);
       fetchBookings();
     } catch (error) {

@@ -11,7 +11,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/auth/register', { username, password });
+      await axios.post('https://sports-complex-booking-app-backend.onrender.com/api/auth/register', { username, password });
       alert('Registration successful!');
       navigate('/login'); // Redirect to login page
     } catch (error) {
